@@ -15,15 +15,16 @@ class TapYTest < Test::Unit::TestCase
     @failing_test = @stream.find{ |d| d['type'] == 'test' && d['status'] == 'fail' }
     @erring_test  = @stream.find{ |d| d['type'] == 'test' && d['status'] == 'error' }
     @todo_test  = @stream.find{ |d| d['type'] == 'test' && d['status'] == 'todo' }
+    @omitted_test  = @stream.find{ |d| d['type'] == 'test' && d['status'] == 'skip' }
   end
 
   def test_sections_count
-    assert_equal 7, @stream.size
+    assert_equal 8, @stream.size
   end
 
   def test_first_document_should_be_suite
     assert_equal 'suite', @stream.first['type']
-    assert_equal 4,       @stream.first['count']
+    assert_equal 5,       @stream.first['count']
   end
 
   def test_second_document_should_be_case
@@ -48,6 +49,14 @@ class TapYTest < Test::Unit::TestCase
     assert_equal 'Test::Unit::Pending',           @todo_test['exception']['class']
     assert_equal 'pended.',                       @todo_test['exception']['message']
     assert_equal 'pend',                          @todo_test['exception']['source']
+  end
+
+  def test_omit_should_have_correct_label_and_exception
+    assert_equal "test_omitted",                  @omitted_test['label']
+    assert_equal "test/fixtures/test_example.rb", @omitted_test['file']
+    assert_equal 'Test::Unit::Omission',          @omitted_test['exception']['class']
+    assert_equal 'omitted.',                      @omitted_test['exception']['message']
+    assert_equal 'omit',                          @omitted_test['exception']['source']
   end
 
   def test_failing_should_hash_correct_exception
@@ -88,11 +97,11 @@ class TapYTest < Test::Unit::TestCase
   end
 
   def test_last_should_have_prpoer_counts
-    assert_equal 4, @stream.last['counts']['total']
+    assert_equal 5, @stream.last['counts']['total']
     assert_equal 1, @stream.last['counts']['error']
     assert_equal 1, @stream.last['counts']['fail']
     assert_equal 1, @stream.last['counts']['pass']
-    assert_equal 0, @stream.last['counts']['omit']
+    assert_equal 1, @stream.last['counts']['omit']
     assert_equal 1, @stream.last['counts']['todo']
   end
 

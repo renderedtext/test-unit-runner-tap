@@ -19,6 +19,11 @@ class ExampleTestCase < Test::Unit::TestCase
     pend
     assert_equal(3, 1 + 2)
   end
+
+  def test_omitted
+    omit
+    assert_equal(1, 1 + 0)
+  end
 end
 
 
