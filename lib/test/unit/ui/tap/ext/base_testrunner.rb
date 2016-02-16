@@ -16,8 +16,8 @@ module Test
           end
 
           def tapout_todo_with_source_location(fault)
-            doc = tapout_todo(fault)
-            doc['file'] = extract_source_location
+            doc = tapout_todo_without_source_location(fault)
+            doc['file'] = extract_source_location(fault)
             doc
           end
 
