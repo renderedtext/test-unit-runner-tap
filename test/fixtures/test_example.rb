@@ -14,6 +14,16 @@ class ExampleTestCase < Test::Unit::TestCase
     sleep 1
     assert_equal('1', '1')
   end
+
+  def test_todo
+    pend
+    assert_equal(3, 1 + 2)
+  end
+
+  def test_omitted
+    omit
+    assert_equal(1, 1 + 0)
+  end
 end
 
 
