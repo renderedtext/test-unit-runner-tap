@@ -37,6 +37,11 @@ module Test
       require 'test/unit/ui/tap/perl_testrunner'
       Test::Unit::UI::Tap::OldTestRunner
     end
+
+    AutoRunner.register_runner(:insight) do |auto_runner|
+      require 'test/unit/ui/tap/ext/insight_testrunner'
+      Test::Unit::UI::Tap::InsightTestRunner
+    end
   end
 end
 
